@@ -1,0 +1,10 @@
+C:\Users\Användare\source\repos\StorageMaster\StartUp\bin\Debug\StartUp.exe.config
+C:\Users\Användare\source\repos\StorageMaster\StartUp\bin\Debug\StartUp.exe
+C:\Users\Användare\source\repos\StorageMaster\StartUp\bin\Debug\StartUp.pdb
+C:\Users\Användare\source\repos\StorageMaster\StartUp\bin\Debug\StorageMaster.dll
+C:\Users\Användare\source\repos\StorageMaster\StartUp\bin\Debug\StorageMaster.pdb
+C:\Users\Användare\source\repos\StorageMaster\StartUp\obj\Debug\Controller.csprojAssemblyReference.cache
+C:\Users\Användare\source\repos\StorageMaster\StartUp\obj\Debug\Controller.csproj.CoreCompileInputs.cache
+C:\Users\Användare\source\repos\StorageMaster\StartUp\obj\Debug\Controller.csproj.CopyComplete
+C:\Users\Användare\source\repos\StorageMaster\StartUp\obj\Debug\StartUp.exe
+C:\Users\Användare\source\repos\StorageMaster\StartUp\obj\Debug\StartUp.pdb

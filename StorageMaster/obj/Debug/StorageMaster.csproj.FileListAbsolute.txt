@@ -1,0 +1,6 @@
+C:\Users\Användare\source\repos\StorageMaster\StorageMaster\bin\Debug\StorageMaster.dll
+C:\Users\Användare\source\repos\StorageMaster\StorageMaster\bin\Debug\StorageMaster.pdb
+C:\Users\Användare\source\repos\StorageMaster\StorageMaster\obj\Debug\StorageMaster.csprojAssemblyReference.cache
+C:\Users\Användare\source\repos\StorageMaster\StorageMaster\obj\Debug\StorageMaster.csproj.CoreCompileInputs.cache
+C:\Users\Användare\source\repos\StorageMaster\StorageMaster\obj\Debug\StorageMaster.dll
+C:\Users\Användare\source\repos\StorageMaster\StorageMaster\obj\Debug\StorageMaster.pdb

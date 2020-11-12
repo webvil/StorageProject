@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30611.23
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StorageMaster", "StorageMaster\StorageMaster.csproj", "{AF785FCC-21F7-4414-B208-FE487B39A7F9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Controller", "StartUp\Controller.csproj", "{B4618647-10A2-4721-861A-CA0F26D62931}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AF785FCC-21F7-4414-B208-FE487B39A7F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF785FCC-21F7-4414-B208-FE487B39A7F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF785FCC-21F7-4414-B208-FE487B39A7F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF785FCC-21F7-4414-B208-FE487B39A7F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4618647-10A2-4721-861A-CA0F26D62931}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4618647-10A2-4721-861A-CA0F26D62931}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4618647-10A2-4721-861A-CA0F26D62931}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4618647-10A2-4721-861A-CA0F26D62931}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C683987B-894F-4A6B-911B-F40EF6DA9F05}
+	EndGlobalSection
+EndGlobal
