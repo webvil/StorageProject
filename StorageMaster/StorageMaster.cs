@@ -84,31 +84,32 @@ namespace StorageMaster
             int count = 0;
             foreach (var name in productNames)
             {
-                for (int i = 0; i < productPool.Count(); i++)//.Any(p => p.name.Contains(name)))
+                foreach (var p in productPool)
                 {
-                    if (productPool[i].name == name)
+                    Console.WriteLine($"Name = { p.name }");
+                    if (p.name == name)
                     {
                         switch (name)
                         {
                             case "Gpu":
-                                currentVehicle.LoadProduct(new Gpu(productPool[i].price));
+                                currentVehicle.LoadProduct(new Gpu(p.price));
                                 break;
                             case "Ram":
-                                currentVehicle.LoadProduct(new Ram(productPool[i].price));
+                                currentVehicle.LoadProduct(new Ram(p.price));
                                 break;
                             case "HardDrive":
-                                currentVehicle.LoadProduct(new HardDrive(productPool[i].price));
+                                currentVehicle.LoadProduct(new HardDrive(p.price));
                                 break;
                             case "SolidStateDrive":
-                                currentVehicle.LoadProduct(new SolidStateDrive(productPool[i].price));
+                                currentVehicle.LoadProduct(new SolidStateDrive(p.price));
                                 break;
 
                             default:
                                 break;
                         }
                         count++;
-                        productPool.RemoveAt(i);
-                        //break;
+                        productPool.Remove(p);
+                        break;
                     }
                     else
                     {
@@ -117,7 +118,7 @@ namespace StorageMaster
                     }
 
                 }
-                
+
             }
             return $"Loaded { count}/{ productNames.Count()} products into { currentVehicle.GetType() }";
             
@@ -169,10 +170,10 @@ namespace StorageMaster
 
         public string GetSummary()
         {
-                var s = "";
+            var s = "";
             foreach (var item in productPool)
             {
-                s += item.name;
+                s += "Name: " + item.name + "\n";
             }
             return s;
         }

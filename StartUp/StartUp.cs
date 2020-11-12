@@ -86,6 +86,7 @@ namespace Controller
                         products.RemoveAt(0);
 
 
+
                         string s = c.LoadVehicle(products);
                         Console.WriteLine(s);
                     }
@@ -113,6 +114,20 @@ namespace Controller
                     {
 
                         string s = c.UnloadVehicle(input[1], int.Parse(input[2]));
+                        Console.WriteLine(s);
+                    }
+                    catch (InvalidOperationException e)
+                    {
+                        Console.WriteLine(e.Message);
+                    }
+                }
+
+                else if (input[0] == "GetSummary")
+                {
+                    try
+                    {
+
+                        string s = c.GetSummary();
                         Console.WriteLine(s);
                     }
                     catch (InvalidOperationException e)
