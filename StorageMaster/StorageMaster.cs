@@ -126,16 +126,17 @@ namespace StorageMaster
             SelectVehicle(sourceName, sourceGarageSlot);
             var destinationStorage = storageRegistry[destinationName];
             var sourceStorage = storageRegistry[sourceName];
-            //int openSlot = 0;
+           
             //for (int i = 0; i < destinationStorage.Garage.Count; i++)
             //{
-                //if (destinationStorage.Garage.ToList()[i] == null)
-                //{
-                    //Console.WriteLine("Slot " +i+ " is empty");
+            //if (destinationStorage.Garage.ToList()[i] == null)
+            //{
+            //Console.WriteLine("Slot " +i+ " is empty");
 
-                    //openSlot = i;
-                    var openSlot = destinationStorage.SendVehicleTo(sourceGarageSlot, destinationStorage);
-                    //break;
+            //openSlot = i;
+            var openSlot = destinationStorage.SendVehicleTo(sourceGarageSlot, destinationStorage);
+
+            
                 //}
 
            // }
@@ -148,13 +149,13 @@ namespace StorageMaster
         public string UnloadVehicle(string storageName, int garageSlot)
         {
             var storage = storageRegistry[storageName];
-            /*foreach (var item in storage.Garage.ToList())
+            /*foreach (var vehicle in storage.Garage.ToList())
             {
-                Console.WriteLine(item);
+                Console.WriteLine(vehicle);
             }*/
             
             var productsInVehicle = storage.GetVehicle(garageSlot).Trunk.Count;
-            int unloadedProductsCount = storage.UnloadVehicle(garageSlot);
+            //int unloadedProductsCount = ;
             return $"Unloaded { unloadedProductsCount}/{ productsInVehicle} products at { storageName}";
             
         }
@@ -163,12 +164,27 @@ namespace StorageMaster
         {
             var storage = storageRegistry[storageName];
             var productsCount = storage.Products.Count;
-            IEnumerable<Product> products = storage.Products.ToArray();
-            /*products.OrderBy<int, Product>(p => p.GetType()).
-                GroupBy(p => p.Name).ToList();
-            return "Stock ({0}/{1}): [{2}]\n, { productsCount}, productsCount, productsCount"; 
-                + "Garage: [{0}]";*/
-            return "string";
+
+            var StockInfo = storage.Products
+                                 .GroupBy(f => f.GetType().Name)
+                                 .OrderByDescending(g => g.Count())
+                                 .ThenBy(h => h.Key);
+
+            List<string> GarageVehicleNames = new List<string>();
+            foreach (var vehicle in storage.Garage)
+            {
+                if (vehicle == null)
+                    GarageVehicleNames.Add("empty");
+                else
+                    GarageVehicleNames.Add(vehicle.GetType().Name);
+            }
+
+            double productsWeights = storage.Products.Sum(p => p.Weight);
+            int storageCapacity = storage.Capacity;
+            string StockFormat = "{ 0 }/{ 1 }";
+
+            return $"Stock ({productsWeights} / {storageCapacity}) : [{StockInfo} \nGarage: [{GarageVehicleNames}]";
+
         }
 
         public string GetSummary()
@@ -178,7 +194,17 @@ namespace StorageMaster
             {
                 s += "Name: " +  p.GetType().Name + "\n";
             }
-            return s;
+            var AllStorages = storageRegistry.Values
+                .OrderBy(p => p.Products.Sum(f => f.Price));
+
+            StringBuilder final = new StringBuilder();
+            foreach (var storage in AllStorages)
+            {
+                final.Append($"{storage.Name}:");
+                double totalMoney = storage.Products.Sum(p => p.Price);
+                final.Append($"Storage Worth: {totalMoney:F2}");
+            }
+            return final.ToString();
         }
     }
 }
