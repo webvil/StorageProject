@@ -95,10 +95,10 @@ namespace StorageMaster
             int count = 0;
             foreach (var name in productNames)
             {
-                Console.WriteLine("Trying to load " + name);
+               // Console.WriteLine("Trying to load " + name);
                 foreach (var p in productPool)
                 {
-                    Console.WriteLine(p.GetType().Name + " in stock");                    
+                   // Console.WriteLine(p.GetType().Name + " in stock");                    
                     if (p.GetType().Name == name)
                     {
                         currentVehicle.LoadProduct(p);
@@ -127,15 +127,9 @@ namespace StorageMaster
             var destinationStorage = storageRegistry[destinationName];
             var sourceStorage = storageRegistry[sourceName];
            
-            //for (int i = 0; i < destinationStorage.Garage.Count; i++)
-            //{
-            //if (destinationStorage.Garage.ToList()[i] == null)
-            //{
-            //Console.WriteLine("Slot " +i+ " is empty");
-
-            //openSlot = i;
+            
             var openSlot = destinationStorage.SendVehicleTo(sourceGarageSlot, destinationStorage);
-
+            //destinationStorage.Garage[openSlot] = currentVehicle;
             
                 //}
 
@@ -148,14 +142,15 @@ namespace StorageMaster
 
         public string UnloadVehicle(string storageName, int garageSlot)
         {
+            //Console.WriteLine("products in vehicle " + productsInVehicle);
             var storage = storageRegistry[storageName];
-            /*foreach (var vehicle in storage.Garage.ToList())
-            {
-                Console.WriteLine(vehicle);
-            }*/
+
+
+            var productsInVehicle = currentVehicle.Trunk.Count;
             
-            var productsInVehicle = storage.GetVehicle(garageSlot).Trunk.Count;
-            //int unloadedProductsCount = ;
+            int unloadedProductsCount  = storage.UnloadVehicle(garageSlot);
+            
+            
             return $"Unloaded { unloadedProductsCount}/{ productsInVehicle} products at { storageName}";
             
         }

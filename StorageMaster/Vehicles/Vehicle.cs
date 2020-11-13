@@ -11,16 +11,26 @@ namespace StorageMaster
 {
     public abstract class Vehicle
     {
+        List<Product> trunk;
         public int Capacity { get; set; }
-        public IReadOnlyCollection<Product> Trunk;
+        public IReadOnlyCollection<Product> Trunk
+        {
+            get
+            {
+                return this.trunk;
+            }
+            set
+            {
+               
+            }
 
-
+        }
         public bool IsFull
         {
             get
             {
                 double totalWeight = 0.0;
-                foreach (var product in Trunk)
+                foreach (var product in this.trunk)
                 {
                     totalWeight += product.Weight;
                 }
@@ -32,14 +42,14 @@ namespace StorageMaster
         {
             get
             {
-                return Trunk.Count == 0;
+                return this.trunk.Count == 0;
             }
 
         }
         public Vehicle(int capacity)
         {
             this.Capacity = capacity;
-            Trunk = new List<Product>();
+            this.trunk = new List<Product>();
         }
 
         public void LoadProduct(Product product)
@@ -48,14 +58,8 @@ namespace StorageMaster
             {
                 throw new InvalidOperationException("Vehicle is full");
             }
-            var products = new List<Product>();
-            //var enumerator = Trunk.GetEnumerator();
-            foreach (var item in Trunk)
-            {
-                products.Add(item);
-            }
-            products.Add(product);
-            Trunk = new ReadOnlyCollection<Product>(products);
+            
+            this.trunk.Add(product);
             return;
 
         }
@@ -65,17 +69,11 @@ namespace StorageMaster
             {
                 return default(Product);
             }
-            var products = new List<Product>();
-            foreach (var item in Trunk)
-            {
-                products.Add(item);
-            }
-            var removedItem = products[products.Count - 1];
-            products.RemoveAt(products.Count - 1);
+            
+            var removedItem = trunk[trunk.Count - 1];
+            trunk.RemoveAt(trunk.Count - 1);
 
-            // var enumerator = Trunk.GetEnumerator();
-
-            Trunk = new ReadOnlyCollection<Product>(products);
+            
             return removedItem;
 
         }

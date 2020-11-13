@@ -18,27 +18,32 @@ namespace StorageMaster
             get
             {
                 var productsWeight = 0.0;
-                foreach (var vehicle in Garage)
+                foreach (var vehicle in garage)
                 {
-                    foreach (var product in vehicle.Trunk)
+                    if (vehicle != null)
                     {
-                        productsWeight += product.Weight;
+                        foreach (var product in vehicle.Trunk)
+                        {
+                            productsWeight += product.Weight;
+                        }
                     }
+                    
                 }
                 return productsWeight >= Capacity;
 
             }
         }
         Vehicle[] garage;
-        public IReadOnlyCollection<Vehicle> Garage;
-        public IReadOnlyCollection<Product> Products;
+        List<Product> products;
+        public IReadOnlyCollection<Vehicle> Garage { get; set; }
+        public IReadOnlyCollection<Product> Products { get; set; }
 
         public Storage(string name, int capacity, int garageSlots, IEnumerable<Vehicle> vehicles)
         {
             this.Name = name;
             this.Capacity = capacity;
             this.GarageSlots = garageSlots;
-            this.Products = new Product[] { };
+            this.products = new List<Product>();
             this.garage = new Vehicle[GarageSlots];
 
             for (int i = 0; i < vehicles.Count(); i++)
@@ -66,12 +71,12 @@ namespace StorageMaster
             {
                 throw new InvalidOperationException("InValid garage slot!");
             }
-            else if (Garage.ElementAt(garageSlot) == null)
+            else if (garage.ElementAt(garageSlot) == null)
             {
                 throw new InvalidOperationException("No vehicle in this slot!");
             }
 
-            return Garage.ElementAt(garageSlot);
+            return garage.ElementAt(garageSlot);
         }
         /// <summary>
         ///     Gets the vehicle from the specified garage slot 
@@ -91,29 +96,31 @@ namespace StorageMaster
         {
             var sentVehicle = GetVehicle(garageSlot);
 
-            var freeSlotInGarage = deliveryLocation.Garage.Any(p => p == null);
-            if (freeSlotInGarage == false)
+            
+            if (!deliveryLocation.Garage.Any(p => p == null))
             {
                 throw new InvalidOperationException("No room in garage!");
             }
-            else
-            {
-                List<Vehicle> vehiclesInGarage = deliveryLocation.Garage.ToList();
-                for (int i = 0; i < vehiclesInGarage.Count; i++)
+            int slot = 0;
+                //List<Vehicle> vehiclesInGarage = deliveryLocation.Garage.ToList();
+
+                for (int i = 0; i < garage.Length; i++)
                 {
-                    if (vehicles[i] == null)
+                    if (garage[i] == null)
                     {
-                        vehiclesInGarage[i] = sentVehicle;
-                        
-                        return i;
+                        garage[i] = sentVehicle;
+
+                        slot =  i;
+                        break;
                     }
 
-                }                
                     
 
-            }
+                }
+
+             return slot;
             
-            return 0;
+
         }
         /// <summary>
         /// If the storage is full, throw an InvalidOperationException with the "Storage is full!"
@@ -129,13 +136,17 @@ namespace StorageMaster
         {
             if (IsFull) throw new InvalidOperationException("Storage is full!");
 
-            var VehicleToGet = GetVehicle(garageSlot);
+            var vehicle = GetVehicle(garageSlot);
+            Console.WriteLine(vehicle.IsEmpty);
+            return 111;
+            
+            
             var UnloadedProducts = 0;
 
-            while (!IsFull && !VehicleToGet.IsEmpty)
+            while (!IsFull && !vehicle.IsEmpty)
             {
-                var temp = VehicleToGet.UnLoad();
-                Products.ToList().Add(temp);
+                
+                products.Add(vehicle.UnLoad());
                 UnloadedProducts++;
             }
             return UnloadedProducts;
