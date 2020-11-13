@@ -12,22 +12,34 @@ namespace StorageMaster
     public class StoregeMaster 
     {
         public IDictionary<string, Storage> storageRegistry = new Dictionary<string, Storage>();
-        List<(string name, double price)> productPool = new List<(string name, double price)>();
+        List<Product> productPool = new List<Product>();
         Vehicle currentVehicle;
         public string AddProduct(string type, double price)
         {
 
-            try
+            switch (type)
             {
-                productPool.Add((type, price));     
-
+                case "Gpu":
+                    productPool.Add(new Gpu(price));     
+                    break;
+                case "SolidStateDrive":
+                    productPool.Add(new SolidStateDrive(price));
+                    break;
+                case "HardDrive":
+                    productPool.Add(new HardDrive(price));
+                    break;
+                case "Ram":
+                    productPool.Add(new Ram(price));
+                    break;
+                default:
+                    throw new InvalidOperationException("Invalid product type");
             }
-            catch (Exception)
-            {
 
-                throw new InvalidOperationException("Invalid product type");
+            
+            
+
                 
-            }
+            
             
               return $"Added {type} to pool.";
                     
@@ -39,8 +51,8 @@ namespace StorageMaster
             if (storageRegistry.ContainsKey(name))
             {
 
-                return "A store with the same name already exists";
                 //return default(Storage);
+                return "A store with the same name already exists";
             }
             if (type == "AutomatedWarehouse")
             {
@@ -59,8 +71,8 @@ namespace StorageMaster
                 throw new InvalidOperationException("Invalid storage type!");
             }
 
-            return $"Registered {name}";
             //return storageRegistry.ToList()[0].Value;
+            return $"Registered {name}";
         }
         /// <summary>
         /// 
@@ -71,10 +83,9 @@ namespace StorageMaster
         public string SelectVehicle(string storageName, int garageSlot)
         {
 
-            //set the current vehicle
             var storage = storageRegistry[storageName];
             currentVehicle = storage.GetVehicle(garageSlot);
-            return $"Selected { currentVehicle.GetType()}";
+            return $"Selected { currentVehicle.GetType().Name }";
             
         }
 
@@ -84,72 +95,64 @@ namespace StorageMaster
             int count = 0;
             foreach (var name in productNames)
             {
+                Console.WriteLine("Trying to load " + name);
                 foreach (var p in productPool)
                 {
-                    Console.WriteLine($"Name = { p.name }");
-                    if (p.name == name)
+                    Console.WriteLine(p.GetType().Name + " in stock");                    
+                    if (p.GetType().Name == name)
                     {
-                        switch (name)
-                        {
-                            case "Gpu":
-                                currentVehicle.LoadProduct(new Gpu(p.price));
-                                break;
-                            case "Ram":
-                                currentVehicle.LoadProduct(new Ram(p.price));
-                                break;
-                            case "HardDrive":
-                                currentVehicle.LoadProduct(new HardDrive(p.price));
-                                break;
-                            case "SolidStateDrive":
-                                currentVehicle.LoadProduct(new SolidStateDrive(p.price));
-                                break;
-
-                            default:
-                                break;
-                        }
+                        currentVehicle.LoadProduct(p);
                         count++;
                         productPool.Remove(p);
                         break;
                     }
-                    else
+                   
+                    
+                    /*else
                     {
                         throw new InvalidOperationException(name + " is out of stock!");
 
-                    }
+                    }*/
 
                 }
 
             }
-            return $"Loaded { count}/{ productNames.Count()} products into { currentVehicle.GetType() }";
+            return $"Loaded { count}/{ productNames.Count()} products into { currentVehicle.GetType().Name }";
             
         }
 
         public string SendVehicleTo(string sourceName, int sourceGarageSlot, string destinationName)
         {
-            var vehicle = SelectVehicle(sourceName, sourceGarageSlot);
+            SelectVehicle(sourceName, sourceGarageSlot);
             var destinationStorage = storageRegistry[destinationName];
             var sourceStorage = storageRegistry[sourceName];
-            int openSlot = 0;
-            for (int i = 0; i < destinationStorage.Garage.Count; i++)
-            {
-                if (destinationStorage.Garage.ToArray()[i] == null)
-                {
-                    openSlot = i;
-                    destinationStorage.SendVehicleTo(openSlot, destinationStorage);
-                    break;
-                }
-                    
-            }
-            //currentVehicle 
+            //int openSlot = 0;
+            //for (int i = 0; i < destinationStorage.Garage.Count; i++)
+            //{
+                //if (destinationStorage.Garage.ToList()[i] == null)
+                //{
+                    //Console.WriteLine("Slot " +i+ " is empty");
 
+                    //openSlot = i;
+                    var openSlot = destinationStorage.SendVehicleTo(sourceGarageSlot, destinationStorage);
+                    //break;
+                //}
+
+           // }
+            
             if (sourceStorage == null) throw new InvalidOperationException("Invalid source storage!");
             if (destinationStorage == null) throw new InvalidOperationException("Invalid destination storage!");
-            return $"Sent {destinationStorage.GetType()} to {destinationName} (slot {openSlot})";
+            return $"Sent {destinationStorage.GetType().Name} to {destinationName} (slot {openSlot})";
         }
 
         public string UnloadVehicle(string storageName, int garageSlot)
         {
             var storage = storageRegistry[storageName];
+            /*foreach (var item in storage.Garage.ToList())
+            {
+                Console.WriteLine(item);
+            }*/
+            
             var productsInVehicle = storage.GetVehicle(garageSlot).Trunk.Count;
             int unloadedProductsCount = storage.UnloadVehicle(garageSlot);
             return $"Unloaded { unloadedProductsCount}/{ productsInVehicle} products at { storageName}";
@@ -171,9 +174,9 @@ namespace StorageMaster
         public string GetSummary()
         {
             var s = "";
-            foreach (var item in productPool)
+            foreach (var p in productPool)
             {
-                s += "Name: " + item.name + "\n";
+                s += "Name: " +  p.GetType().Name + "\n";
             }
             return s;
         }

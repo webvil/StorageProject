@@ -29,7 +29,7 @@ namespace StorageMaster
 
             }
         }
-
+        Vehicle[] vehicles;
         public readonly IReadOnlyCollection<Vehicle> Garage;
         public readonly IReadOnlyCollection<Product> Products;
 
@@ -38,13 +38,14 @@ namespace StorageMaster
             this.Name = name;
             this.Capacity = capacity;
             this.GarageSlots = garageSlots;
-            this.Garage = new Vehicle[garageSlots];//corrected here 
             this.Products = new Product[] { };
-            /*for (int i = 0; i < vehicles.Count(); i++)
+            this.vehicles = new Vehicle[GarageSlots];
+
+            for (int i = 0; i < vehicles.Count(); i++)
             {
-                Garage.ToArray()[i] = vehicles.ToArray()[i];
-            }*/
-            this.Garage = new ReadOnlyCollection<Vehicle>((IList<Vehicle>)vehicles);
+                this.vehicles[i] = vehicles.ToList()[i];
+            }
+            this.Garage = new ReadOnlyCollection<Vehicle>((IList<Vehicle>)this.vehicles);
 
         }
 
@@ -61,6 +62,7 @@ namespace StorageMaster
             {
                 throw new InvalidOperationException("No vehicle in this slot!");
             }
+
             return Garage.ElementAt(garageSlot);
         }
 
@@ -73,7 +75,19 @@ namespace StorageMaster
             {
                 throw new InvalidOperationException("No room in garage!");
             }
+            else
+            {
+                for (int i = 0; i < deliveryLocation.Garage.Count; i++)
+                {
+                    if (deliveryLocation.Garage.ToArray()[i] == null)
+                    {
+                        deliveryLocation.Garage.ToArray()[i] = sentVehicle;
+                        break;
+                    }
+                }
 
+            }
+            //Garage = new ReadOnlyCollection(IList(vehicles))
             var slot = Garage.ToArray()[garageSlot] = null;
             int freedSlot = Convert.ToInt32(slot);
             return freedSlot;

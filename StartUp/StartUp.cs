@@ -13,20 +13,27 @@ namespace Controller
         static void Main(string[] args)
         {
 
-            /*
 
-            var storage = c.RegisterStorage("Warehouse", "AmozonWareHouse");
+
+            /*var storage = c.RegisterStorage("Warehouse", "AmozonWareHouse");
 
 
             foreach (var vehicle in storage.Garage)
             {
-                
-            Console.WriteLine(vehicle.GetType());
-            }
-            
-            Console.ReadLine();*/
+                if (vehicle == null)
+                {
+                    Console.WriteLine("Vehicle is null");
+                }
+                else
+                {
+                    Console.WriteLine(vehicle.GetType());
+                }
 
-             var c = new StoregeMaster();
+            }
+
+            Console.ReadLine();*/
+            var c = new StoregeMaster();
+
             while (true)
             {
 

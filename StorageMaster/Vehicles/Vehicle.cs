@@ -24,7 +24,7 @@ namespace StorageMaster
                 {
                     totalWeight += product.Weight;
                 }
-                return totalWeight >= Capacity ? true : false;
+                return totalWeight >= Capacity;
             }
 
         }
@@ -37,7 +37,6 @@ namespace StorageMaster
 
         }
         public Vehicle(int capacity)
-
         {
             this.Capacity = capacity;
             Trunk = new List<Product>();
@@ -57,6 +56,8 @@ namespace StorageMaster
             }
             products.Add(product);
             Trunk = new ReadOnlyCollection<Product>(products);
+            return;
+
         }
         public Product UnLoad()
         {
@@ -69,13 +70,13 @@ namespace StorageMaster
             {
                 products.Add(item);
             }
-            var removeItem = products[products.Count - 1];
+            var removedItem = products[products.Count - 1];
             products.RemoveAt(products.Count - 1);
 
             // var enumerator = Trunk.GetEnumerator();
 
             Trunk = new ReadOnlyCollection<Product>(products);
-            return removeItem;
+            return removedItem;
 
         }
     }
